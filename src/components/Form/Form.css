@@ -11,8 +11,19 @@
 
 .form .field {
     margin:15px 0;
+    width: 100%;
 }
 .form .field label {
     display: block;
     padding-bottom: 5px;
+}
+.form .grid-row {
+    width: 100%;
+    display: grid;
+    gap: 10px;
+    justify-items: start;
+    align-items: start;
+}
+.form .grid-row--two-col {
+    grid-template-columns: 1fr 1fr;
 }

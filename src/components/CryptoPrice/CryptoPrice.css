@@ -1,0 +1,10 @@
+.crypto-price,
+.crypto-price--head
+{
+    width: 100%;
+    display: grid;
+    gap: 10px;
+    justify-items: start;
+    align-items: start;
+    grid-template-columns: 1fr 1fr 2fr 2fr;
+}

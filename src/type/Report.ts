@@ -1,8 +1,9 @@
-import {CryptoRecord} from "@/type/CryptoRecord";
+import { CryptoRecord } from '@/type/CryptoRecord';
 
 export interface Report {
-    taxInstitution: string;
-    caseNumber: string;
-    ownerId: string;
-    cryptoCurrencies: CryptoRecord[];
+  taxInstitution: string;
+  caseNumber: string;
+  ownerId: string;
+  reportId: string;
+  cryptoCurrencies: CryptoRecord[];
 }
