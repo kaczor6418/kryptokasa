@@ -11,6 +11,7 @@ export interface InputProps {
   maxLength?: number;
   type?: string;
   required?: boolean;
+  disabled?: boolean;
 }
 
 export function Input(props: InputProps): JSX.Element {
@@ -64,6 +65,7 @@ export function Input(props: InputProps): JSX.Element {
         value={props.value}
         name={props.id}
         id={props.id}
+        disabled={props.disabled ?? false}
         maxLength={props.maxLength}
         onChange={(e) => onChange(e.target.value)}
       />

@@ -9,6 +9,7 @@ export interface SelectProps {
   label?: string;
   id: string;
   required?: boolean;
+  disabled?: boolean;
   options: [string | number, string][];
 }
 
@@ -58,6 +59,7 @@ export function Select(props: SelectProps) {
         name={props.id}
         id={props.id}
         value={props.value}
+        disabled={props.disabled ?? false}
         onChange={(e) => onChange(e.target.value)}
       >
         {props.options.map((item) => (

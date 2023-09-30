@@ -4,9 +4,13 @@ import { NumberInput } from '@/components/Form/Input/NumberInput';
 import './CryptoRecordElement.css';
 import { CryptoPriceElement } from '@/components/CryptoPrice/CryptoPrice';
 import { CryptoPrice } from '@/type/CryptoPrice';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { CustomFormContext, FormErrorStatusChange } from '@/components/Form/Form';
 import { Select } from '@/components/Form/Select/Select';
+import { AppContext } from '@/App';
+import { CryptoExchangeRateSummary } from '@/exchangeRatesService/ExchangeRatesService';
+import { getGUID } from '@/utils/getGUID';
+import { SingleRate } from '@/exchangeRatesService/CryptoMarketApiClient';
 
 export interface CryptoRecordProps {
   record: CryptoRecord;
@@ -16,6 +20,45 @@ export interface CryptoRecordProps {
 
 export function CryptoRecordElement(props: CryptoRecordProps) {
   const form = useContext(CustomFormContext);
+  const app = useContext(AppContext);
+
+  useEffect(() => {
+    app?.fetchCrypto(props.record.name).then((msg) => {
+      if (msg) {
+        const keys: Array<keyof CryptoExchangeRateSummary> = Object.keys(msg) as Array<keyof CryptoExchangeRateSummary>;
+        const results = keys
+          .filter((key: keyof CryptoExchangeRateSummary) => typeof msg[key] === 'object' && msg[key] != null)
+          .map((key) => {
+            const currencyInfo: SingleRate = msg[key] as SingleRate;
+            const price: CryptoPrice = {
+              guid: getGUID(),
+              priceSourceURL: '',
+              priceSourceName: key,
+              unitPriceCurrency: currencyInfo.unitPriceCurrency,
+              isManual: false,
+              unitPrice: currencyInfo.unitPrice,
+              exchangeRateToPLN: props.record.amount * currencyInfo.unitPrice * currencyInfo.exchangeRateToPLN,
+            };
+            return price;
+          });
+        for (let i = results.length; i < 3; i++) {
+          results.push({
+            exchangeRateToPLN: 1,
+            isManual: true,
+            unitPrice: 0,
+            unitPriceCurrency: 'PLN',
+            priceSourceName: '',
+            guid: getGUID(),
+            priceSourceURL: '',
+          });
+        }
+        props.onChange({
+          ...props.record,
+          prices: results,
+        });
+      }
+    });
+  }, [props.record.name]);
 
   function onPriceValidationChanged(index: Number, error: FormErrorStatusChange) {
     form?.onValidationChanged({

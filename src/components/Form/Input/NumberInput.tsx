@@ -7,6 +7,7 @@ export interface NumberInputProps {
   label?: string;
   id: string;
   required?: boolean;
+  disabled?: boolean;
 }
 
 export function NumberInput(props: NumberInputProps) {
@@ -31,7 +32,8 @@ export function NumberInput(props: NumberInputProps) {
       label={props.label}
       type={'number'}
       id={props.id}
-      required
+      required={props.required}
+      disabled={props.disabled}
     />
   );
 }

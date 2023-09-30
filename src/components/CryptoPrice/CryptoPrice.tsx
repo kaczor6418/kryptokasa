@@ -61,6 +61,7 @@ export function CryptoPriceElement(props: CryptoPriceElementProps) {
         onChange={(value) => onChangeProp('unitPrice', value)}
         onValidationChanged={onUnitPriceValidationChanged}
         value={props.value.unitPrice}
+        disabled={!props.value.isManual}
         id={getId('unitPrice')}
         required={true}
       />
@@ -70,6 +71,7 @@ export function CryptoPriceElement(props: CryptoPriceElementProps) {
         value={props.value.unitPriceCurrency}
         id={getId('unitPriceCurrency')}
         required={true}
+        disabled={!props.value.isManual}
         options={[
           ['PLN', 'PLN'],
           ['USD', 'USD'],
@@ -81,6 +83,7 @@ export function CryptoPriceElement(props: CryptoPriceElementProps) {
         onChange={(value) => onChangeProp('priceSourceName', value)}
         onValidationChanged={onUnitPriceSourceURLValidationChanged}
         value={props.value.priceSourceName}
+        disabled={!props.value.isManual}
         id={getId('priceSourceName')}
         required={true}
       />
@@ -88,6 +91,7 @@ export function CryptoPriceElement(props: CryptoPriceElementProps) {
         onChange={(value) => onChangeProp('priceSourceURL', value)}
         onValidationChanged={onUnitPriceSourceURLValidationChanged}
         value={props.value.priceSourceURL}
+        disabled={!props.value.isManual}
         required={true}
         id={getId('priceSourceURL')}
       />
