@@ -8,6 +8,9 @@ import { ExchangeRatesService } from './exchangeRatesService/ExchangeRatesServic
 import { CryptoRecordElement } from '@/components/CryptoRecord/CryptoRecordElement';
 import { CryptoRecord } from '@/type/CryptoRecord';
 import { getGUID } from '@/utils/getGUID';
+import { Form } from '@/components/Form/Form';
+import { FormSubmit } from '@/components/Form/FormSubmit';
+import { GeneralInfo } from '@/GeneralInfo';
 
 if (!import.meta.env.VITE_NOELECTRON) {
   console.log('[App.tsx]', `Hello world from Electron ${process.versions.electron}!`);
@@ -61,6 +64,7 @@ function App() {
           priceSourceName: 'priceSourceName',
           priceSourceURL: 'priceSourceURL',
           unitPriceCurrency: 'unitPriceCurrency',
+          guid: getGUID(),
         },
         {
           unitPrice: 1,
@@ -69,6 +73,7 @@ function App() {
           priceSourceName: 'priceSourceName',
           priceSourceURL: 'priceSourceURL',
           unitPriceCurrency: 'unitPriceCurrency',
+          guid: getGUID(),
         },
         {
           unitPrice: 2,
@@ -77,54 +82,39 @@ function App() {
           priceSourceName: 'priceSourceName',
           priceSourceURL: 'priceSourceURL',
           unitPriceCurrency: 'unitPriceCurrency',
+          guid: getGUID(),
         },
       ],
     });
   }
 
+  function onSubmit(): void {
+    console.log('userSubmitted the form');
+  }
   return (
     <div className='App'>
-      <button onClick={logFetchExchangeRates}>Log fetch rates</button>
-      <form className={'form'}>
-        <fieldset>
-          <legend>Ogólna informacja</legend>
-          <Select
-            value={report.taxInstitution}
-            onChange={(value) => onChangeReport('taxInstitution', value)}
-            options={taxOffices}
-            label={'Nazwa organu egzekucyjnego'}
-            id={'taxInstitution'}
-          />
-
-          <Input
-            label={'Numer sprawy'}
-            maxLength={100}
-            id={'caseNumber'}
-            value={report.caseNumber}
-            onChange={(value) => onChangeReport('caseNumber', value)}
-          />
-          <Input
-            label={'Dane identyfikujące właściciela kryptoaktywa'}
-            maxLength={100}
-            id={'ownerId'}
-            value={report.ownerId}
-            onChange={(value) => onChangeReport('ownerId', value)}
-          />
-        </fieldset>
+        <button onClick={logFetchExchangeRates}>Log fetch rates</button>
+        <Form onSubmit={onSubmit}>
+        <GeneralInfo
+          report={report}
+          onChange={setReport}
+          taxOffices={taxOffices}
+        />
         <fieldset>
           <legend>Kryptoaktywa</legend>
           <div>
             {report.cryptoCurrencies.map((record, index) => (
               <CryptoRecordElement
                 key={record.guid}
-                onChange={(newValue) => onChangeRecord(index, newValue)}
+                index={index}
                 record={record}
+                onChange={(newValue) => onChangeRecord(index, newValue)}
               />
             ))}
           </div>
           <button onClick={onAddCurrency}>Add Currency</button>
         </fieldset>
-      </form>
+      </Form>
     </div>
   );
 }
