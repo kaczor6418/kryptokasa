@@ -54,6 +54,22 @@ function App() {
           priceSourceURL: 'priceSourceURL',
           unitPriceCurrency: 'unitPriceCurrency',
         },
+        {
+          unitPrice: 1,
+          exchangeRateToPLN: 0,
+          isManual: false,
+          priceSourceName: 'priceSourceName',
+          priceSourceURL: 'priceSourceURL',
+          unitPriceCurrency: 'unitPriceCurrency',
+        },
+        {
+          unitPrice: 2,
+          exchangeRateToPLN: 0,
+          isManual: false,
+          priceSourceName: 'priceSourceName',
+          priceSourceURL: 'priceSourceURL',
+          unitPriceCurrency: 'unitPriceCurrency',
+        },
       ],
     });
   }
