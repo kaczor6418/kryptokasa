@@ -18,10 +18,11 @@
  */
 
 export interface CryptoPrice {
-    unitPrice: number;
-    unitPriceCurrency: string;
-    exchangeRateToPLN: number;
-    priceSourceName: string;
-    priceSourceURL: string;
-    isManual: boolean;
+  unitPrice: number;
+  unitPriceCurrency: string;
+  exchangeRateToPLN: number;
+  priceSourceName: string;
+  priceSourceURL: string;
+  isManual: boolean;
+  guid: string;
 }

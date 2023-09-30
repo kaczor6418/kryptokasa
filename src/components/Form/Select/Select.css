@@ -2,3 +2,8 @@
     width: 100%;
     padding:5px;
 }
+
+
+.form .field--select.field--error select{
+    border-color: red;
+}
