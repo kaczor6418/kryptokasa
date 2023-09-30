@@ -3,6 +3,8 @@ export interface SingleRate {
     unitPriceCurrency: string;
     exchangeRateToPLN: number;
     exchangeRateEffectiveDateString: string;
+    sourceName: string;
+    sourceUrl: string;
 }
 
 export interface CryptoMarketApiClient {

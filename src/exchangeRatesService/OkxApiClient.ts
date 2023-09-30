@@ -47,7 +47,9 @@ export class OkxApiClient implements CryptoMarketApiClient {
             exchangeRateEffectiveDateString: nbpRate.effectiveDate,
             exchangeRateToPLN: nbpRate.rate,
             unitPrice: parseFloat(rate.data[0].idxPx),
-            unitPriceCurrency: fiat
+            unitPriceCurrency: fiat,
+            sourceName: 'OKX',
+            sourceUrl: 'https://www.okx.com/api/v5/market/index-tickers'
         };
     }
 

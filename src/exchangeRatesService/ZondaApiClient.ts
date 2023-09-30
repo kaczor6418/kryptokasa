@@ -45,7 +45,9 @@ export class ZondaApiClient implements CryptoMarketApiClient {
             unitPrice: parseFloat(this.zondaTicker![key].rate),
             unitPriceCurrency: fiat,
             exchangeRateEffectiveDateString: nbpRate.effectiveDate,
-            exchangeRateToPLN: nbpRate.rate
+            exchangeRateToPLN: nbpRate.rate,
+            sourceName: 'zondacrypto',
+            sourceUrl: 'https://api.zondacrypto.exchange/rest/trading/ticker'
         };
     }
 }

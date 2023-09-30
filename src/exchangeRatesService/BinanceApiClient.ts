@@ -42,7 +42,9 @@ export class BinanceApiClient implements CryptoMarketApiClient {
             exchangeRateEffectiveDateString: nbpRate.effectiveDate,
             exchangeRateToPLN: nbpRate.rate,
             unitPrice: parseFloat(rate.price),
-            unitPriceCurrency: fiat
+            unitPriceCurrency: fiat,
+            sourceName: 'Binance',
+            sourceUrl: 'https://api.binance.com/api/v3/ticker/price'
         }
     }
 
