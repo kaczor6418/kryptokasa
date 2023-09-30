@@ -32,7 +32,7 @@ export function CryptoRecordElement(props: CryptoRecordProps) {
             const currencyInfo: SingleRate = msg[key] as SingleRate;
             const price: CryptoPrice = {
               guid: getGUID(),
-              priceSourceURL: '',
+              priceSourceURL: currencyInfo.sourceUrl,
               priceSourceName: key,
               unitPriceCurrency: currencyInfo.unitPriceCurrency,
               isManual: false,
