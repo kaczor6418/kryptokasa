@@ -1,9 +1,10 @@
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useState, useRef } from 'react';
 import './App.css';
 import './components/Form/Form.css';
 import { Report } from './type/Report';
-import { Input } from '@/components/Form/Input/Input';
-import { Select } from '@/components/Form/Select/Select';
+import { Input } from '@/components/Input/Input';
+import { Select } from '@/components/Select/Select';
+import { ExchangeRatesService } from './exchangeRatesService/ExchangeRatesService';
 import { CryptoRecordElement } from '@/components/CryptoRecord/CryptoRecordElement';
 import { CryptoRecord } from '@/type/CryptoRecord';
 import { getGUID } from '@/utils/getGUID';
@@ -30,8 +31,15 @@ function App() {
     ['Tax office 2', 'Tax office 2'],
   ]);
 
+  const exchangeRatesService = useRef(new ExchangeRatesService());
+
   function onChangeReport(prop: keyof Report, value: unknown): void {
     setReport({ ...report, [prop]: value });
+  }
+
+  function logFetchExchangeRates() {
+    void exchangeRatesService.current.fetchCrypto('BTC').then(r => console.log(r));
+    void exchangeRatesService.current.fetchCrypto('ETH').then(r => console.log(r));
   }
 
   function onChangeRecord(index: number, record: CryptoRecord): void {
@@ -85,7 +93,8 @@ function App() {
   }
   return (
     <div className='App'>
-      <Form onSubmit={onSubmit}>
+        <button onClick={logFetchExchangeRates}>Log fetch rates</button>
+        <Form onSubmit={onSubmit}>
         <GeneralInfo
           report={report}
           onChange={setReport}
