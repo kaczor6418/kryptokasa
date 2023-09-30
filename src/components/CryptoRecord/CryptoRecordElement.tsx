@@ -1,5 +1,4 @@
 import { CryptoRecord } from '@/type/CryptoRecord';
-import { Input } from '@/components/Form/Input/Input';
 import { NumberInput } from '@/components/Form/Input/NumberInput';
 import './CryptoRecordElement.css';
 import { CryptoPriceElement } from '@/components/CryptoPrice/CryptoPrice';
@@ -23,42 +22,55 @@ export function CryptoRecordElement(props: CryptoRecordProps) {
   const app = useContext(AppContext);
 
   useEffect(() => {
-    app?.fetchCrypto(props.record.name).then((msg) => {
-      if (msg) {
-        const keys: Array<keyof CryptoExchangeRateSummary> = Object.keys(msg) as Array<keyof CryptoExchangeRateSummary>;
-        const results = keys
-          .filter((key: keyof CryptoExchangeRateSummary) => typeof msg[key] === 'object' && msg[key] != null)
-          .map((key) => {
-            const currencyInfo: SingleRate = msg[key] as SingleRate;
-            const price: CryptoPrice = {
-              guid: getGUID(),
-              priceSourceURL: currencyInfo.sourceUrl,
-              priceSourceName: key,
-              unitPriceCurrency: currencyInfo.unitPriceCurrency,
-              isManual: false,
-              unitPrice: currencyInfo.unitPrice,
-              exchangeRateToPLN: props.record.amount * currencyInfo.unitPrice * currencyInfo.exchangeRateToPLN,
-            };
-            return price;
-          });
-        for (let i = results.length; i < 3; i++) {
-          results.push({
-            exchangeRateToPLN: 1,
-            isManual: true,
-            unitPrice: 0,
-            unitPriceCurrency: 'PLN',
-            priceSourceName: '',
-            guid: getGUID(),
-            priceSourceURL: '',
+    if (!props.record.name) {
+      props.onChange({
+        ...props.record,
+        prices: [],
+      });
+    } else {
+      app?.fetchCrypto(props.record.name).then((msg) => {
+        if (msg) {
+          const keys: Array<keyof CryptoExchangeRateSummary> = Object.keys(msg) as Array<
+            keyof CryptoExchangeRateSummary
+          >;
+          const results = keys
+            .filter((key: keyof CryptoExchangeRateSummary) => typeof msg[key] === 'object' && msg[key] != null)
+            .map((key) => {
+              const currencyInfo: SingleRate = msg[key] as SingleRate;
+              const price: CryptoPrice = {
+                guid: getGUID(),
+                priceSourceURL: currencyInfo.sourceUrl,
+                priceSourceName: key,
+                unitPriceCurrency: currencyInfo.unitPriceCurrency,
+                isManual: false,
+                unitPrice: currencyInfo.unitPrice,
+                exchangeRateToPLN: props.record.amount * currencyInfo.unitPrice * currencyInfo.exchangeRateToPLN,
+              };
+              return price;
+            });
+          for (let i = results.length; i < 3; i++) {
+            results.push(getEmptyPriceRecord());
+          }
+          props.onChange({
+            ...props.record,
+            prices: results,
           });
         }
-        props.onChange({
-          ...props.record,
-          prices: results,
-        });
-      }
-    });
+      });
+    }
   }, [props.record.name]);
+
+  function getEmptyPriceRecord() {
+    return {
+      exchangeRateToPLN: 1,
+      isManual: true,
+      unitPrice: 0,
+      unitPriceCurrency: 'PLN',
+      priceSourceName: '',
+      guid: getGUID(),
+      priceSourceURL: '',
+    };
+  }
 
   function onPriceValidationChanged(index: Number, error: FormErrorStatusChange) {
     form?.onValidationChanged({
@@ -130,12 +142,14 @@ export function CryptoRecordElement(props: CryptoRecordProps) {
         />
       </div>
       <div className={'prices'}>
-        <div className={'crypto-price--head'}>
-          <label htmlFor={'0_unitPrice'}>Cena jednostkowa</label>
-          <label htmlFor={'0_unitPriceCurrency'}>Waluta</label>
-          <label htmlFor={'0_priceSourceName'}>Instytucja</label>
-          <label htmlFor={'0_priceSourceURL'}>URL Instytucji</label>
-        </div>
+        {props.record.prices.length == 0 ? null : (
+          <div className={'crypto-price--head'}>
+            <label htmlFor={'0_unitPrice'}>Cena jednostkowa</label>
+            <label htmlFor={'0_unitPriceCurrency'}>Waluta</label>
+            <label htmlFor={'0_priceSourceName'}>Instytucja</label>
+            <label htmlFor={'0_priceSourceURL'}>URL Instytucji</label>
+          </div>
+        )}
         {props.record.prices.map((price, index) => (
           <CryptoPriceElement
             key={price.guid}

@@ -65,7 +65,6 @@ function App() {
   return (
     <AppContext.Provider value={exchangeRatesService.current}>
       <div className='App'>
-        <button onClick={logFetchExchangeRates}>Log fetch rates</button>
         <Form onSubmit={onSubmit}>
           <GeneralInfo
             report={report}
