@@ -15,14 +15,18 @@ if (!import.meta.env.VITE_NOELECTRON) {
 
 export const AppContext = createContext<ExchangeRatesService | null>(null);
 
-function App() {
-  const [report, setReport] = useState<Report>({
+function getEmptyReport() {
+  return {
     caseNumber: '',
     taxInstitution: '',
     cryptoCurrencies: [],
     ownerId: '',
     reportId: getGUID(),
-  });
+  };
+}
+
+function App() {
+  const [report, setReport] = useState<Report>(getEmptyReport());
 
   const [taxOffices] = useState<[string | number, string][]>([
     ['', '--'],
@@ -59,13 +63,20 @@ function App() {
     });
   }
 
+  function onReset() {
+    setReport(getEmptyReport());
+  }
+
   function onSubmit(): void {
     console.log('userSubmitted the form');
   }
   return (
     <AppContext.Provider value={exchangeRatesService.current}>
       <div className='App'>
-        <Form onSubmit={onSubmit}>
+        <Form
+          onSubmit={onSubmit}
+          onReset={onReset}
+        >
           <GeneralInfo
             report={report}
             onChange={setReport}

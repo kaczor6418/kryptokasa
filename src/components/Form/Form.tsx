@@ -1,9 +1,11 @@
 import React, { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 import { FormSubmit } from '@/components/Form/FormSubmit';
+import { FormReset } from '@/components/Form/FormReset';
 
 export interface FormProps {
   children: React.ReactElement[];
   onSubmit(): void;
+  onReset(): void;
 }
 export interface FormErrorStatusChange {
   path: string;
@@ -13,20 +15,11 @@ export interface FormErrorStatusChange {
 
 type CallbackFunction = (...args: any[]) => void;
 
-export const enum FormContextEvents {
-  ShowErrors,
-}
-
-interface EventEmitter {
-  on: (eventName: FormContextEvents, callback: CallbackFunction) => void;
-  off: (eventName: FormContextEvents, callback: CallbackFunction) => void;
-  emit: (eventName: FormContextEvents, ...args: any[]) => void;
-}
-
 export interface IFormContext {
   isValid: boolean;
   isSubmitted: boolean;
   submit: () => void;
+  reset: () => void;
   onValidationChanged: (error: FormErrorStatusChange) => void;
 }
 
@@ -34,7 +27,7 @@ export const CustomFormContext = createContext<IFormContext | null>(null);
 
 let errors: FormErrorStatusChange[] = [];
 
-export function Form({ children, onSubmit }: FormProps): JSX.Element {
+export function Form({ children, onSubmit, onReset }: FormProps): JSX.Element {
   const [validationIssues, setValidationIssues] = useState<FormErrorStatusChange[]>([]);
   const [isValid, setIsValid] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -44,6 +37,10 @@ export function Form({ children, onSubmit }: FormProps): JSX.Element {
       onSubmit();
     }
   }, [isValid]);
+  const onResetCallback = useCallback(() => {
+    setIsSubmitted(false);
+    onReset();
+  }, [isSubmitted]);
   const onChangeValid = useCallback(
     (error: FormErrorStatusChange) => {
       let newValidationIssues = errors.filter((issue) => issue.path !== error.path);
@@ -66,6 +63,7 @@ export function Form({ children, onSubmit }: FormProps): JSX.Element {
       isSubmitted: isSubmitted,
       onValidationChanged: onChangeValid,
       submit: onChangeSubmit,
+      reset: onResetCallback,
     };
   }, [onSubmit, isValid, isSubmitted]);
 
@@ -76,7 +74,10 @@ export function Form({ children, onSubmit }: FormProps): JSX.Element {
         <div className={'form-errors'}>
           {isSubmitted && validationIssues.map((issue) => <p key={issue.path}>{issue.error}</p>)}
         </div>
-        <FormSubmit label={'Wyślij'} />
+        <div className={'form--footer'}>
+          <FormReset label={'Wyczyść'} />
+          <FormSubmit label={'Wyślij'} />
+        </div>
       </form>
     </CustomFormContext.Provider>
   );

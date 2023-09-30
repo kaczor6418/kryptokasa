@@ -28,3 +28,13 @@
 .form .grid-row--two-col {
     grid-template-columns: 1fr 1fr;
 }
+.form--footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.form-button--submit {
+    background: #535bf2;
+    color: #ffffff;
+}
