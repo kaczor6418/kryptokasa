@@ -10,12 +10,15 @@ import { Form } from '@/components/Form/Form';
 import { GeneralInfo } from '@/GeneralInfo';
 import kasLogoUrl from './assets/kas-logo.jpg';
 import ministerstwoLogoUrl from './assets/ministerstwo-finasow-logo.webp';
+import { taxOffices as taxOfficesConst } from '@/taxOffices';
 
 if (!import.meta.env.VITE_NOELECTRON) {
   console.log('[App.tsx]', `Hello world from Electron ${process.versions.electron}!`);
 }
 
 export const AppContext = createContext<ExchangeRatesService | null>(null);
+
+const taxOfficeOptionsList: [string, string][] = taxOfficesConst.map((a) => [a, a]);
 
 function getEmptyReport() {
   return {
@@ -30,11 +33,7 @@ function getEmptyReport() {
 function App() {
   const [report, setReport] = useState<Report>(getEmptyReport());
 
-  const [taxOffices] = useState<[string | number, string][]>([
-    ['', '--'],
-    ['Tax office 1', 'Tax office 1'],
-    ['Tax office 2', 'Tax office 2'],
-  ]);
+  const [taxOffices] = useState<[string | number, string][]>([['', '--'], ...taxOfficeOptionsList]);
 
   const exchangeRatesService = useRef(new ExchangeRatesService());
 

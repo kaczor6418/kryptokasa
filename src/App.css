@@ -12,3 +12,8 @@
     max-width: 25vw;
     max-height: 15vh;
 }
+
+
+.App h1 {
+    color: #0052a5;
+}
