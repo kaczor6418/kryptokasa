@@ -36,11 +36,11 @@ export function Form({ children, onSubmit, onReset }: FormProps): JSX.Element {
     if (isValid) {
       onSubmit();
     }
-  }, [isValid]);
+  }, [isValid, onSubmit]);
   const onResetCallback = useCallback(() => {
     setIsSubmitted(false);
     onReset();
-  }, [isSubmitted]);
+  }, [isSubmitted, onReset]);
   const onChangeValid = useCallback(
     (error: FormErrorStatusChange) => {
       let newValidationIssues = errors.filter((issue) => issue.path !== error.path);

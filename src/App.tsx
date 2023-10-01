@@ -1,6 +1,6 @@
-import {downloadPdf} from "@/services/GenerateReport/downloadPdf";
-import {generateReport} from "@/services/GenerateReport/generateReport";
-import { MouseEvent, useState, useRef, createContext } from 'react';
+import { downloadPdf } from '@/services/GenerateReport/downloadPdf';
+import { generateReport } from '@/services/GenerateReport/generateReport';
+import { MouseEvent, useState, useRef, createContext, useEffect, useCallback } from 'react';
 import './App.css';
 import './components/Form/Form.css';
 import { Report } from './type/Report';
@@ -39,14 +39,19 @@ function App() {
 
   const exchangeRatesService = useRef(new ExchangeRatesService());
 
-  function onChangeReport(prop: keyof Report, value: unknown): void {
-    setReport({ ...report, [prop]: value });
-  }
+  const onSubmit = useCallback(() => {
+    const reportHTML = generateReport(report, '');
+    const encodedHTML = encodeURIComponent(reportHTML.outerHTML);
+    const dataURL = `data:text/html,${encodedHTML}`;
+    downloadPdf(dataURL);
+  }, [report]);
 
   function onChangeRecord(index: number, record: CryptoRecord): void {
-    const newCryptoCurrencies = report.cryptoCurrencies.slice();
-    newCryptoCurrencies[index] = record;
-    setReport({ ...report, cryptoCurrencies: newCryptoCurrencies });
+    setReport((report) => {
+      const newCryptoCurrencies = report.cryptoCurrencies.slice();
+      newCryptoCurrencies[index] = record;
+      return { ...report, cryptoCurrencies: newCryptoCurrencies };
+    });
   }
 
   function onAddCurrency(e: MouseEvent) {
@@ -65,12 +70,6 @@ function App() {
     setReport(getEmptyReport());
   }
 
-  function onSubmit(): void {
-    const reportHTML = generateReport(report, '');
-    const encodedHTML = encodeURIComponent(reportHTML.outerHTML);
-    const dataURL =  `data:text/html,${encodedHTML}`;
-    downloadPdf(dataURL);
-  }
   return (
     <AppContext.Provider value={exchangeRatesService.current}>
       <div className='App'>
