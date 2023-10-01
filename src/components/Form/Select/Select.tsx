@@ -1,6 +1,6 @@
 import './Select.css';
 import { useContext, useEffect, useState } from 'react';
-import { CustomFormContext, FormContextEvents } from '@/components/Form/Form';
+import { CustomFormContext } from '@/components/Form/Form';
 
 export interface SelectProps {
   onChange(value: string): void;
