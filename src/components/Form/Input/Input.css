@@ -1,8 +1,9 @@
 .field--input input{
     width: 100%;
     padding:5px;
+    border: 1px solid #222;
 }
 
 .form .field--input.field--error input{
-    border-color: red;
+    border-color: #dc143c;
 }
