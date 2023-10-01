@@ -136,17 +136,33 @@ function createCryptosTable(cryptos: CryptoRecord[]) {
   return table;
 }
 
+function calculateTotalPrice(cryptos) {
+  let totalSum = 0;
+  for (const currency of cryptos.cryptoCurrencies) {
+    let currencySum = 0;
+    for (const stockData of currency.prices) {
+      currencySum += currency.amount * stockData.exchangeRateToPLN * stockData.unitPrice;
+    }
+    totalSum += currencySum;
+  }
+  return totalSum;
+}
+
 export function createReportSummarySection(cryptos: Report, usdPlnExchangeTime: string) {
   const summarySection = document.createElement('section');
   const title = document.createElement('h2');
   const details = createSectionList([
     [
       'Kurs USD/PLN',
-      twoDecimalPlaces(cryptos.cryptoCurrencies[0].prices[0].exchangeRateToPLN)
+      `${twoDecimalPlaces(cryptos.cryptoCurrencies[0].prices[0].exchangeRateToPLN)} PLN`
     ],
     [
       'Kurs z dnia',
       usdPlnExchangeTime.split('-').reverse().join('.')
+    ],
+    [
+      'Całkowita wycena',
+      `${twoDecimalPlaces(calculateTotalPrice(cryptos))} PLN`
     ]
   ]);
   const cryptosTable = createCryptosTable(cryptos.cryptoCurrencies);
