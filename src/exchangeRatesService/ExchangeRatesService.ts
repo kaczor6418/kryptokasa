@@ -23,6 +23,11 @@ export class ExchangeRatesService {
   private okxClient: OkxApiClient = new OkxApiClient(this.nbpClient, acceptedFiats);
   private zondaClient: ZondaApiClient = new ZondaApiClient(this.nbpClient, acceptedFiats);
 
+  async getNpbUsdPlnRateDateString(): Promise<string> {
+    const rate = await this.nbpClient.fetchRate('USD');
+    return rate.effectiveDate;
+  }
+
   async fetchCrypto(cryptocurrencyCode: string) {
     if (this.cache.has(cryptocurrencyCode)) {
       return Promise.resolve(this.cache.get(cryptocurrencyCode));
