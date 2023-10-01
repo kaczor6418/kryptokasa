@@ -34,6 +34,12 @@ export function Input(props: InputProps): JSX.Element {
       setIsPristine(false);
     }
   }, [formContext?.isSubmitted]);
+  
+  const [rawValue, setRawValue] = useState(props.value);
+
+  useEffect(() => {
+    setRawValue(props.value);
+  }, [props.value]);
 
   function onChange(value: string) {
     setIsPristine(false);
@@ -62,12 +68,25 @@ export function Input(props: InputProps): JSX.Element {
       {props.label ? <label htmlFor={props.id}>{props.label}</label> : null}
       <input
         type={props.type ? props.type : 'text'}
-        value={props.value}
+        value={rawValue}
         name={props.id}
         id={props.id}
         disabled={props.disabled ?? false}
         maxLength={props.maxLength}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => {
+          if (props.type === 'number') {
+            const newValue = parseFloat(e.target.value);
+            const oldValue = parseFloat(props.value);
+            if(newValue !== oldValue) {
+              return onChange(e.target.value);
+            } else {
+              e.preventDefault();
+              setRawValue(e.target.value);
+            }
+          } else {
+            return onChange(e.target.value);
+          }
+        }}
       />
     </div>
   );
