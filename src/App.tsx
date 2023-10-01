@@ -41,11 +41,6 @@ function App() {
     setReport({ ...report, [prop]: value });
   }
 
-  function logFetchExchangeRates() {
-    void exchangeRatesService.current.fetchCrypto('BTC').then((r) => console.log(r));
-    void exchangeRatesService.current.fetchCrypto('ETH').then((r) => console.log(r));
-  }
-
   function onChangeRecord(index: number, record: CryptoRecord): void {
     const newCryptoCurrencies = report.cryptoCurrencies.slice();
     newCryptoCurrencies[index] = record;

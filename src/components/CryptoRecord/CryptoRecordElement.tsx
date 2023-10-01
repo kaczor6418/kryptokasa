@@ -10,6 +10,7 @@ import { AppContext } from '@/App';
 import { CryptoExchangeRateSummary } from '@/exchangeRatesService/ExchangeRatesService';
 import { getGUID } from '@/utils/getGUID';
 import { SingleRate } from '@/exchangeRatesService/CryptoMarketApiClient';
+import { cryptoCurrencies } from '@/cryptoCurrencies';
 
 export interface CryptoRecordProps {
   record: CryptoRecord;
@@ -121,11 +122,7 @@ export function CryptoRecordElement(props: CryptoRecordProps) {
       <div className={'grid-row grid-row--two-col'}>
         <Select
           onChange={onNameChange}
-          options={[
-            ['', '--'],
-            ['BTC', 'Bitcoin(BTC)'],
-            ['ETH', 'Etherium(ETH)'],
-          ]}
+          options={[['', '--'], ...cryptoCurrencies]}
           onValidationChanged={onNameValidationChanged}
           value={props.record.name}
           label={'Nazwa'}
