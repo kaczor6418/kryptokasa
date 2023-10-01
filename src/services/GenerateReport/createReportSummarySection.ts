@@ -64,7 +64,7 @@ function createCryptoRow(cryptoCurrency: CryptoRecord) {
             cryptoUnitPrice.textContent = `${twoDecimalPlaces(record.unitPrice)} PLN`;
           } else {
             const pricePLN = record.unitPrice * record.exchangeRateToPLN;
-            cryptoUnitPrice.textContent = `${twoDecimalPlaces(pricePLN)} PLN (${twoDecimalPlaces(record.unitPrice)} ${record.unitPriceCurrency}})`;
+            cryptoUnitPrice.textContent = `${twoDecimalPlaces(pricePLN)} PLN (${twoDecimalPlaces(record.unitPrice)} ${record.unitPriceCurrency})`;
           }
           rowContentWrapper.appendChild(cryptoUnitPrice);
           break;
