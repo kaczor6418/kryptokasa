@@ -1,3 +1,5 @@
+import {downloadPdf} from "@/services/GenerateReport/downloadPdf";
+import {generateReport} from "@/services/GenerateReport/generateReport";
 import { MouseEvent, useState, useRef, createContext } from 'react';
 import './App.css';
 import './components/Form/Form.css';
@@ -64,7 +66,10 @@ function App() {
   }
 
   function onSubmit(): void {
-    console.log('userSubmitted the form');
+    const reportHTML = generateReport(report, '');
+    const encodedHTML = encodeURIComponent(reportHTML.outerHTML);
+    const dataURL =  `data:text/html,${encodedHTML}`;
+    downloadPdf(dataURL);
   }
   return (
     <AppContext.Provider value={exchangeRatesService.current}>

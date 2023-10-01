@@ -5,8 +5,8 @@ const SECTION_TITLE = 'Dane raportu';
 
 function getFormattedDate() {
   const currDate = new Date();
-  const day = currDate.getDate().toString(10).padStart(2, 0);
-  const month = (currDate.getMonth() + 1).toString(10).padStart(2, 0);
+  const day = currDate.getDate().toString(10).padStart(2, '0');
+  const month = (currDate.getMonth() + 1).toString(10).padStart(2, '0');
   const year = currDate.getFullYear();
   return `${day}.${month}.${year}`;
 }

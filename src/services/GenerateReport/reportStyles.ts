@@ -1,4 +1,4 @@
-export const reportStyles = `
+export const REPORT_STYLES = `
   <style>
     body {
       margin: 0;
