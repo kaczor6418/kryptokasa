@@ -35,6 +35,11 @@
 }
 
 .form-button--submit {
-    background: #535bf2;
+    background: #0052a5;
+    color: #ffffff;
+}
+.form--add-currency {
+    margin-top:20px;
+    background: #0052a5;
     color: #ffffff;
 }

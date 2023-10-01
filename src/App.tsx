@@ -8,6 +8,8 @@ import { CryptoRecord } from '@/type/CryptoRecord';
 import { getGUID } from '@/utils/getGUID';
 import { Form } from '@/components/Form/Form';
 import { GeneralInfo } from '@/GeneralInfo';
+import kasLogoUrl from './assets/kas-logo.jpg';
+import ministerstwoLogoUrl from './assets/ministerstwo-finasow-logo.webp';
 
 if (!import.meta.env.VITE_NOELECTRON) {
   console.log('[App.tsx]', `Hello world from Electron ${process.versions.electron}!`);
@@ -73,6 +75,11 @@ function App() {
   return (
     <AppContext.Provider value={exchangeRatesService.current}>
       <div className='App'>
+        <header>
+          <img src={kasLogoUrl} />
+          <h1>Kryptokasa</h1>
+          <img src={ministerstwoLogoUrl} />
+        </header>
         <Form
           onSubmit={onSubmit}
           onReset={onReset}
@@ -94,7 +101,12 @@ function App() {
                 />
               ))}
             </div>
-            <button onClick={onAddCurrency}>Add Currency</button>
+            <button
+              onClick={onAddCurrency}
+              className={'form--add-currency'}
+            >
+              Add Currency
+            </button>
           </fieldset>
         </Form>
       </div>
