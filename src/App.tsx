@@ -99,7 +99,7 @@ function App() {
               onClick={onAddCurrency}
               className={'form--add-currency'}
             >
-              Add Currency
+              Dodaj Krytpoaktywo
             </button>
           </fieldset>
         </Form>

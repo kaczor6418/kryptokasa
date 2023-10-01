@@ -76,7 +76,7 @@ export function Form({ children, onSubmit, onReset }: FormProps): JSX.Element {
         </div>
         <div className={'form--footer'}>
           <FormReset label={'Wyczyść'} />
-          <FormSubmit label={'Wyślij'} />
+          <FormSubmit label={'Wygeneruj'} />
         </div>
       </form>
     </CustomFormContext.Provider>
